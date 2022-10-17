@@ -10,17 +10,20 @@ let dashIcon = document.querySelector(".dashboard_icon");
 let fiveDayForecast = document.querySelector(".fiveDayForecast");
 let history = document.querySelector(".history");
 let historyUl = document.querySelector(".historyUl");
-let cityHistoryList = [];
+// let cityHistoryList = [];
 
 //Click event function when you click search
 searchButton.addEventListener("click", function () {
   let cityName = searchInput.value;
   let cityHistory = JSON.parse(localStorage.getItem("cityHistory")) || [];
 
-  //check if cityName is already a city inside the cityHistory array
-  cityHistory.push(cityName);
-  localStorage.setItem("cityHistory", JSON.stringify(cityHistory));
-  renderLocalStorageCityName();
+  //If function to check if cityName is already a city inside the cityHistory array
+  if (cityHistory.includes(cityName)) {
+    //
+  } else {
+    cityHistory.push(cityName);
+    localStorage.setItem("cityHistory", JSON.stringify(cityHistory));
+  }
 
   //API Variables
   let APIKey = "56fd51a87db5dd7df7ddaa8c41913fa4";
@@ -93,6 +96,7 @@ searchButton.addEventListener("click", function () {
   //Invoke Functions
   renderWeatherDashboard();
   renderFiveDayForecast();
+  renderLocalStorageCityName();
 });
 
 //Function to render local storage
@@ -107,10 +111,10 @@ function renderLocalStorageCityName() {
       let historyList = document.createElement("li");
       historyList.textContent = cityHistory[i];
       historyList.setAttribute("class", "historyList");
-      //create an event listener and use the same function on the on the top
       historyUl.appendChild(historyList);
     }
   }
 }
+// Invoke Local Storage Function
 
-renderLocalStorageCityName();
+//create an event listener and use the same function on the on the top
