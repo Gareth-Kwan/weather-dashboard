@@ -10,17 +10,23 @@ let dashIcon = document.querySelector(".dashboard_icon");
 let fiveDayForecast = document.querySelector(".fiveDayForecast");
 let history = document.querySelector(".history");
 let historyUl = document.querySelector(".historyUl");
+let weatherDashBoard = document.querySelector(".weatherDashBoard");
+let fiveDayForecastTitle = document.querySelector(".fiveDayForecastTitle");
 // let cityHistoryList = [];
 
 //Click event function when you click search
-searchButton.addEventListener("click", function () {
+searchButton.addEventListener("click", function (event) {
+  event.preventDefault();
   let cityName = searchInput.value;
   let cityHistory = JSON.parse(localStorage.getItem("cityHistory")) || [];
 
+  //To prevent the function from trigger if the search box is empty
+  if (cityName === " " || cityName === "") {
+    return;
+  }
+
   //If function to check if cityName is already a city inside the cityHistory array
-  if (cityHistory.includes(cityName)) {
-    //
-  } else {
+  if (!cityHistory.includes(cityName)) {
     cityHistory.push(cityName);
     localStorage.setItem("cityHistory", JSON.stringify(cityHistory));
   }
@@ -38,21 +44,15 @@ searchButton.addEventListener("click", function () {
       })
       .then(function (data) {
         // console.log(data);
-        // console.log(data.city.name);
-        // console.log(data.list[0].weather[0].description);
-        // console.log(data.list[0].main.temp);
-        // console.log(data.list[0].weather[0].icon);
-        // console.log(data.list[0].wind.speed);
-        // console.log(data.list[0].main.humidity);
         dashCityName.textContent = "City: " + data.city.name + " (" + data.list[0].dt_txt.split(" ")[0] + ")";
         dashDescription.textContent = "Description: " + data.list[0].weather[0].description;
         dashTemp.textContent = "Temperature: " + data.list[0].main.temp + "°C";
         dashWind.textContent = "Wind Speed: " + data.list[0].wind.speed + "Km/h";
         dashHumidity.textContent = "Humidity: " + data.list[0].main.humidity + "%";
-        let weatherDashBoard = document.querySelector(".weatherDashBoard");
         weatherDashBoard.style.border = "2px solid black";
         let dashWeatherPicture = document.createElement("img");
         dashWeatherPicture.src = `http://openweathermap.org/img/w/${data.list[0].weather[0].icon}.png`;
+        dashIcon.innerHTML = " ";
         dashIcon.appendChild(dashWeatherPicture);
       });
   }
@@ -64,13 +64,9 @@ searchButton.addEventListener("click", function () {
         return response.json();
       })
       .then(function (data) {
+        fiveDayForecast.innerHTML = " ";
         days = [0, 7, 15, 23, 31];
         days.forEach(function (i) {
-          // console.log(data);
-          // console.log(data.list[i].main.temp);
-          // console.log(data.list[i].weather[0].icon);
-          // console.log(data.list[i].wind.speed);
-          // console.log(data.list[i].main.humidity);
           let divEl = document.createElement("div");
           let forecastDate = document.createElement("p");
           let forecastTemp = document.createElement("p");
@@ -89,6 +85,7 @@ searchButton.addEventListener("click", function () {
           divEl.appendChild(forecastWind);
           divEl.appendChild(forecastHumidity);
           fiveDayForecast.appendChild(divEl);
+          fiveDayForecastTitle.textContent = "5-Day Forecast";
         });
       });
   }
@@ -101,20 +98,17 @@ searchButton.addEventListener("click", function () {
 
 //Function to render local storage
 function renderLocalStorageCityName() {
-  // get the data
+  // Get the data
   let cityHistory = JSON.parse(localStorage.getItem("cityHistory")) || [];
-  //empty the html element container of the button list items
-  if (cityHistory.length == 0) {
-    console.log("no searches yet");
-  } else {
-    for (let i = 0; i < cityHistory.length; i++) {
-      let historyList = document.createElement("li");
-      historyList.textContent = cityHistory[i];
-      historyList.setAttribute("class", "historyList");
-      historyUl.appendChild(historyList);
-    }
+  //Empty the html element container of the button list items
+  historyUl.innerHTML = " ";
+  for (let i = 0; i < cityHistory.length; i++) {
+    let historyList = document.createElement("li");
+    historyList.textContent = cityHistory[i];
+    historyList.setAttribute("class", "historyList");
+    historyUl.appendChild(historyList);
   }
 }
-// Invoke Local Storage Function
 
-//create an event listener and use the same function on the on the top
+//Click event listener and use City history as the search result
+// historyList.addEventListener("click", function () {});
