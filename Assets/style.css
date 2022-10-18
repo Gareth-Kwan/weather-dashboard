@@ -51,7 +51,7 @@
   display: inline-block;
   gap: 10px;
   width: 18%;
-  height: 65%;
+  height: 100%;
   padding: 1%;
   color: white;
   background-image: url("./picture/title-bg\ picture.jpg");
@@ -72,4 +72,5 @@
   background-image: url("./picture/title-bg\ picture.jpg");
   background-position: 30%;
   width: 75%;
+  cursor: pointer;
 }
