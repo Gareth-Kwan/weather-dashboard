@@ -11,6 +11,7 @@ let fiveDayForecast = document.querySelector(".fiveDayForecast");
 let history = document.querySelector(".history");
 let historyUl = document.querySelector(".historyUl");
 let weatherDashBoard = document.querySelector(".weatherDashBoard");
+let historyList = document.querySelector(".historyList");
 
 let cityHistory = JSON.parse(localStorage.getItem("cityHistory")) || [];
 
@@ -77,9 +78,6 @@ function firstCapCityName(cityName) {
 
 //Function to render local storage
 function renderLocalStorageCityName() {
-  // Get the data
-  // let cityHistory = JSON.parse(localStorage.getItem("cityHistory")) || [];
-
   //Empty the html element container of the button list items
   historyUl.innerHTML = " ";
   for (let i = 0; i < cityHistory.length; i++) {
@@ -87,6 +85,7 @@ function renderLocalStorageCityName() {
     historyList.textContent = firstCapCityName(cityHistory[i]);
     historyList.setAttribute("class", "historyList");
     historyUl.appendChild(historyList);
+    console.log(historyList);
   }
 }
 
@@ -96,7 +95,7 @@ searchButton.addEventListener("click", function (event) {
 
   let cityName = searchInput.value;
   cityName = cityName.toLowerCase();
-  console.log(cityName);
+
   //To prevent the function from trigger if the search box is empty
   if (cityName === " " || cityName === "") {
     return;
@@ -114,10 +113,13 @@ searchButton.addEventListener("click", function (event) {
   renderLocalStorageCityName();
 });
 
-// let historyList = document.querySelector(".historyList");
-// //Click event listener and use City history as the search result
-// historyList.addEventListener("click", function (event) {
-//   let cityHistory = JSON.parse(localStorage.getItem("cityHistory")) || [];
-//   let nameOfCity = event.target.value;
-//   renderWeatherDashboard(nameOfCity);
-// });
+//Invoke local store when the page loads
+renderLocalStorageCityName();
+
+//Click event listener and use City history as the search result
+historyList.addEventListener("click", function (event) {
+  let nameOfCity = event.target.value;
+  console.log("Hello World");
+  renderWeatherDashboard(nameOfCity);
+  renderFiveDayForecast(nameOfCity);
+});
