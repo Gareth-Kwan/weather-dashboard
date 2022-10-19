@@ -28,7 +28,7 @@ function renderWeatherDashboard(cityName) {
     .then(function (data) {
       // console.log(data);
       dashCityName.textContent = "City: " + data.city.name + " (" + data.list[0].dt_txt.split(" ")[0] + ")";
-      dashDescription.textContent = "Description: " + data.list[0].weather[0].description;
+      dashDescription.textContent = "Description: " + firstCapCityName(data.list[0].weather[0].description);
       dashTemp.textContent = "Temperature: " + data.list[0].main.temp + "°C";
       dashWind.textContent = "Wind Speed: " + data.list[0].wind.speed + "Km/h";
       dashHumidity.textContent = "Humidity: " + data.list[0].main.humidity + "%";
@@ -85,7 +85,6 @@ function renderLocalStorageCityName() {
     historyList.textContent = firstCapCityName(cityHistory[i]);
     historyList.setAttribute("class", "historyList");
     historyUl.appendChild(historyList);
-    console.log(historyList);
   }
 }
 
@@ -117,9 +116,8 @@ searchButton.addEventListener("click", function (event) {
 renderLocalStorageCityName();
 
 //Click event listener and use City history as the search result
-historyList.addEventListener("click", function (event) {
-  let nameOfCity = event.target.value;
-  console.log("Hello World");
+historyUl.addEventListener("click", function (event) {
+  let nameOfCity = event.target.textContent;
   renderWeatherDashboard(nameOfCity);
   renderFiveDayForecast(nameOfCity);
 });
